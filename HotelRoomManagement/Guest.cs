@@ -16,7 +16,7 @@ namespace HotelRoomManagement
         /// </summary>
         public string Name
         {
-            get { return _name}
+            get { return _name; }
             set 
             {
                 if (string.IsNullOrWhiteSpace(value))

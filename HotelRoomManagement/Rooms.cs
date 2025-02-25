@@ -50,6 +50,15 @@ namespace HotelRoomManagement
             }
         }
 
+
+        /// <summary>
+        /// Gets list of the guest notes
+        /// </summary>
+        public List<string> GuestNotes
+        {
+            get { return _guestNotes; }
+        }
+
         /// <summary>
         /// Gets list of current guests
         /// </summary>
@@ -131,8 +140,22 @@ namespace HotelRoomManagement
 
         }
 
+        public void CleaningService()
+        {
+            Console.WriteLine("\nSending Cleaning Service...");
+            Console.WriteLine("Expected to be done in 30 minutes.\n");
+        }
+
+        public void WakeUpCall()
+        {
+            Console.WriteLine("\nWake-Up call has been scheduled for tommorow at 8:00 am.");
+            Console.WriteLine("Expected to be done in 30 minutes.\n");
+        }
+
         // Other rooms will say if they are standard or elite
         public abstract string RoomType();
-    
+
     }
+
+
 }
