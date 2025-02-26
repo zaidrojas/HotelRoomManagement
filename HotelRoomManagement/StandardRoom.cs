@@ -12,6 +12,7 @@ namespace HotelRoomManagement
         {
             RoomNumber = roomNumber;
             RoomCapacity = roomCapacity;
+            //_guestNotes = new List<string>();
         }
 
         public override string RoomType()

@@ -12,8 +12,8 @@ namespace HotelRoomManagement
         // Fields
         private string _roomNumber;
         private int _roomCapacity;
-        private List<string> _guestNotes;
-        private List<Guest> _guests;
+        private List<string> _guestNotes = new List<string>();
+        private List<Guest> _guests = new List<Guest>();
         private double _guestCardNumber;
         private int _daysStaying;
         private int _daysLeft;
@@ -113,6 +113,11 @@ namespace HotelRoomManagement
                 }
                 _daysLeft = value;
             }
+        }
+
+        public void AddGuest(Guest newGuest)
+        {
+            Guests.Add(newGuest);
         }
 
         public void RoomInformation()
