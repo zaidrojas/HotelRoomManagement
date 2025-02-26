@@ -79,7 +79,7 @@ namespace HotelRoomManagement
                     }
                     else
                     {
-                        row += ("[  ]");
+                        row += ("[  ]; ");
                     }
                 }
 
@@ -107,7 +107,26 @@ namespace HotelRoomManagement
                 }
             }
         }
-        
+
+        #endregion
+
+        #region VerifyRoom
+        public static bool VerifyRoom(string room_num, out Room storedRoom)
+        {
+            foreach (Room room in hotelRooms)
+            {
+                if (room.RoomNumber.ToLower() == room_num.ToLower())
+                {
+                    storedRoom = room;
+                    return true;
+                }
+            }
+            Console.WriteLine("\n***************************");
+            Console.WriteLine("Room Cannot be found.");
+            Console.WriteLine("***************************\n");
+            storedRoom = null;
+            return false;
+        }
         #endregion
 
         static List<Room> hotelRooms = new List<Room>
@@ -134,6 +153,8 @@ namespace HotelRoomManagement
             {
                 Guest tempGuest = new Guest("Josh", "Jacob");
                 RoomToAddGuest("A1", tempGuest);
+               tempGuest = new Guest("Josh", "Jacob");
+                RoomToAddGuest("A3", tempGuest);
                 // Fields
                 int choice;
                 //
@@ -155,46 +176,50 @@ namespace HotelRoomManagement
                 switch (choice)
                 {
                     case 1:
-                        // Field
-                        int roomChoice;
-
-                        Console.Clear();
-                        ProgramTitle();
-                        Console.WriteLine("----------- All Rooms ------------");
-                        ViewRooms("all");
-                        Console.WriteLine("----------------------------------");
-                        Console.WriteLine("(Keep blank and enter to return to Main Menu)");
-                        Console.Write("Enter room (Format: A1): ");
-                        if (!IntVerify(out roomChoice))
-                        { continue; }
-
-                        break;
-
                     case 2:
-                        Console.Clear();
-                        ProgramTitle();
-                        Console.WriteLine("----------- All Rooms ------------");
-                        ViewRooms("vacant");
-                        Console.WriteLine("----------------------------------");
-                        Console.WriteLine("(Keep blank and enter to return to Main Menu)");
-                        Console.Write("Enter room (Format: A1): ");
-                        if (!IntVerify(out roomChoice))
-                        { continue; }
-
-                        break;
-
                     case 3:
+                        #region Room Select Menu
                         Console.Clear();
-                        ProgramTitle();
-                        Console.WriteLine("----------- All Rooms ------------");
-                        ViewRooms("occupied");
-                        Console.WriteLine("----------------------------------");
-                        Console.WriteLine("(Keep blank and enter to return to Main Menu)");
-                        Console.Write("Enter room (Format: A1): ");
-                        if (!IntVerify(out roomChoice))
-                        { continue; }
+                        while (true)
+                        {
+                            // Field
+                            Room roomChoice = null;
 
-                        break;
+                            ProgramTitle();
+                            if (choice == 1)
+                            {
+                                Console.WriteLine("----------- All Rooms ------------");
+                                ViewRooms("all");
+                            }
+                            else if (choice == 2)
+                            {
+                                Console.WriteLine("---------- Vacant Rooms ----------");
+                                ViewRooms("vacant");
+                            }
+                            else if (choice == 3)
+                            {
+                                Console.WriteLine("--------- Occupied Rooms ---------");
+                                ViewRooms("occupied");
+                            }
+                            Console.WriteLine("----------------------------------");
+                            Console.WriteLine("(Keep blank and enter to return to Main Menu)");
+                            Console.Write("Enter room (Format: A1): ");
+                            string u_input = Console.ReadLine();
+                            if (u_input == "")
+                            {
+                                break;
+                            }
+                            while (VerifyRoom(u_input, out roomChoice))
+                            {
+                                #region Room Menu
+                                
+                                Console.Write("Menu");
+                                #endregion
+                            }
+                        }
+                        Console.Clear();
+                        #endregion
+                        continue;
 
                     case 4:
                         break;
@@ -208,7 +233,7 @@ namespace HotelRoomManagement
                     default:
                         break;
                 }
-
+                break;
 
             }
 
