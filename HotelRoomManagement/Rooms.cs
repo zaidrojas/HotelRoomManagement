@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace HotelRoomManagement
 {
-    abstract class Room 
+    abstract class Room
     {
         // Fields
         private string _roomNumber;
@@ -120,14 +120,28 @@ namespace HotelRoomManagement
             Guests.Add(newGuest);
         }
 
+        public void AddGuest(Guest newGuest, int daysStaying, double cardInfo)
+        {
+            DaysStaying = daysStaying;
+            DaysLeft = daysStaying;
+            GuestCardNumber = cardInfo;
+            Guests.Add(newGuest);
+        }
+
         public void RoomInformation()
         {
-            // Room Capacity
-            // Current Guests #
-               // Guest Names
-            // Total Days Staying
-            // Days Remaining
-            // Card payment info
+            Console.WriteLine($"Room Capacity: {RoomCapacity}");
+            Console.WriteLine($"Guests: {Guests.Count()}");
+            if (Guests.Count != 0)
+            {
+                foreach (Guest guest in Guests)
+                {
+                    Console.WriteLine($"-{guest.FirstName} {guest.LastName}");
+                }
+                Console.WriteLine($"Days Staying: {DaysStaying}");
+                Console.WriteLine($"Days Remaining: {DaysLeft}");
+                Console.WriteLine($"Card Being Used: {GuestCardNumber}");
+            }
         }
 
         public void DisplayNotes()
@@ -147,14 +161,21 @@ namespace HotelRoomManagement
 
         public void CleaningService()
         {
+            Console.WriteLine("-------- Cleaning Service --------");
             Console.WriteLine("\nSending Cleaning Service...");
             Console.WriteLine("Expected to be done in 30 minutes.\n");
+            Console.WriteLine("----------------------------------");
+            Console.Write("(Keep blank and enter to go back): ");
+            Console.ReadLine();
         }
 
         public void WakeUpCall()
         {
-            Console.WriteLine("\nWake-Up call has been scheduled for tommorow at 8:00 am.");
-            Console.WriteLine("Expected to be done in 30 minutes.\n");
+            Console.WriteLine("---------- Wake Up Call ----------");
+            Console.WriteLine("\nWake-Up call has been scheduled for tommorow at 8:00 am.\n");
+            Console.WriteLine("----------------------------------");
+            Console.Write("(Keep blank and enter to go back): ");
+            Console.ReadLine();
         }
 
         // Other rooms will say if they are standard or elite

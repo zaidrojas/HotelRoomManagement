@@ -32,6 +32,9 @@ namespace HotelRoomManagement
             Console.WriteLine("-A/C");
             Console.WriteLine("-Televisoin");
             Console.WriteLine("-Toiletries");
+            Console.WriteLine("----------------------------------");
+            Console.Write("(Keep blank and enter to go back): ");
+            Console.ReadLine();
         }
     }
 }

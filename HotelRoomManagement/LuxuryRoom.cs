@@ -36,6 +36,9 @@ namespace HotelRoomManagement
             Console.WriteLine("-Two Bathrobes");
             Console.WriteLine("-Balcony With Beach View");
             Console.WriteLine("-Locking Safe");
+            Console.WriteLine("----------------------------------");
+            Console.Write("(Keep blank and enter to go back): ");
+            Console.ReadLine();
         }
     }
 }

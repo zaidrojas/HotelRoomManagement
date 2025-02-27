@@ -23,7 +23,7 @@ namespace HotelRoomManagement
         // if (!IntVerify(out a_int))
         // { continue; }
 
-        public static bool IntVerify(out int variable)
+        public static bool IntVerify(out int variable, bool skip = false)
         {
             // variable is the input to be verified
             if (!int.TryParse(Console.ReadLine(), out variable))
@@ -96,13 +96,21 @@ namespace HotelRoomManagement
         #endregion
 
         #region Add Guests
-        public static void RoomToAddGuest(string room_num, Guest newGuest)
+        public static void RoomToAddGuest(string room_num, Guest newGuest, int daysStaying = 0, double cardInfo = 0)
         {
             foreach (Room room in hotelRooms)
             {
                 if (room.RoomNumber.ToLower() == room_num.ToLower())
                 {
-                    room.AddGuest(newGuest);
+                    if (cardInfo < 0)
+                    {
+                        room.AddGuest(newGuest);
+                    }
+                    // If not simply adding the guest but also the other stay information, then it shall be added
+                    else
+                    {
+                        room.AddGuest(newGuest, daysStaying, cardInfo);
+                    }
                     return;
                 }
             }
@@ -149,12 +157,14 @@ namespace HotelRoomManagement
 
         static void Main(string[] args)
         {
+            // Adding Guest
+            Guest tempGuest = new Guest("Josh", "Jacob");
+            RoomToAddGuest("A1", tempGuest);
+            tempGuest = new Guest("James", "Jacob");
+            RoomToAddGuest("A1", tempGuest, 21, 6132008844);
+
             while (true)
             {
-                Guest tempGuest = new Guest("Josh", "Jacob");
-                RoomToAddGuest("A1", tempGuest);
-               tempGuest = new Guest("Josh", "Jacob");
-                RoomToAddGuest("A3", tempGuest);
                 // Fields
                 int choice;
                 //
@@ -178,47 +188,11 @@ namespace HotelRoomManagement
                     case 1:
                     case 2:
                     case 3:
-                        #region Room Select Menu
+                        // All Hotel Rooms Menu
                         Console.Clear();
-                        while (true)
-                        {
-                            // Field
-                            Room roomChoice = null;
+                        FloorMenu.DisplayFloorMenu(choice);
+                        Console.Clear();
 
-                            ProgramTitle();
-                            if (choice == 1)
-                            {
-                                Console.WriteLine("----------- All Rooms ------------");
-                                ViewRooms("all");
-                            }
-                            else if (choice == 2)
-                            {
-                                Console.WriteLine("---------- Vacant Rooms ----------");
-                                ViewRooms("vacant");
-                            }
-                            else if (choice == 3)
-                            {
-                                Console.WriteLine("--------- Occupied Rooms ---------");
-                                ViewRooms("occupied");
-                            }
-                            Console.WriteLine("----------------------------------");
-                            Console.WriteLine("(Keep blank and enter to return to Main Menu)");
-                            Console.Write("Enter room (Format: A1): ");
-                            string u_input = Console.ReadLine();
-                            if (u_input == "")
-                            {
-                                break;
-                            }
-                            while (VerifyRoom(u_input, out roomChoice))
-                            {
-                                #region Room Menu
-                                
-                                Console.Write("Menu");
-                                #endregion
-                            }
-                        }
-                        Console.Clear();
-                        #endregion
                         continue;
 
                     case 4:
@@ -231,7 +205,10 @@ namespace HotelRoomManagement
                         break;
 
                     default:
-                        break;
+                        Console.WriteLine("\n***************************");
+                        Console.WriteLine("Choice must be between 1-6.");
+                        Console.WriteLine("***************************\n");
+                        continue;
                 }
                 break;
 
