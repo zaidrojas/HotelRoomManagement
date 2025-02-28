@@ -37,6 +37,29 @@ namespace HotelRoomManagement
         }
         // Example: 
         // StringVerifyNull(a_string);
+        public static bool CardVerify(out double card)
+        {
+            // variable is the input to be verified
+            if (!double.TryParse(Console.ReadLine(), out card) || card.ToString().Length != 9)
+            {
+                Console.WriteLine("\n***************************");
+                Console.WriteLine("Card must be a valid 9 digit input.");
+                Console.WriteLine("***************************\n");
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
+
+        #region Uppercase string
+        public static string UpperStart(string word)
+        {
+            string updated_word = word.ToLower();
+            char start_chat = char.ToUpper(updated_word[0]);
+            updated_word = updated_word.Substring(1);
+            return start_chat + updated_word;
+        }
         #endregion
 
         #region Program Title
@@ -160,8 +183,8 @@ namespace HotelRoomManagement
             // Adding Guest
             Guest tempGuest = new Guest("Josh", "Jacob");
             RoomToAddGuest("A1", tempGuest);
-            tempGuest = new Guest("James", "Jacob");
-            RoomToAddGuest("A1", tempGuest, 21, 6132008844);
+            //tempGuest = new Guest("James", "Jacob");
+            //RoomToAddGuest("A1", tempGuest, 21, 6132008844);
 
             while (true)
             {
@@ -202,6 +225,7 @@ namespace HotelRoomManagement
                         break;
 
                     case 6:
+                        // Exit Program
                         break;
 
                     default:

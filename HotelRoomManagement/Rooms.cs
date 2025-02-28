@@ -122,10 +122,19 @@ namespace HotelRoomManagement
 
         public void AddGuest(Guest newGuest, int daysStaying, double cardInfo)
         {
+            Guests.Add(newGuest);
             DaysStaying = daysStaying;
             DaysLeft = daysStaying;
             GuestCardNumber = cardInfo;
-            Guests.Add(newGuest);
+        }
+
+        public void CheckOutGuests()
+        {
+            GuestNotes.Clear();
+            Guests.Clear();
+            GuestCardNumber = 0;
+            DaysLeft = 0;
+            DaysStaying = 0;
         }
 
         public void RoomInformation()
@@ -144,19 +153,38 @@ namespace HotelRoomManagement
             }
         }
 
-        public void DisplayNotes()
+        public void DisplayNotes(bool numbers = false)
         {
+            // numbers will make it if the notes are numbered or not
+            Console.WriteLine("**** Notes ****");
+            for (var i = 0; i < GuestNotes.Count; i++)
+            {
+                if (numbers)
+                {
+                    Console.WriteLine($"{i + 1}] {GuestNotes[i]}");
+                }
+                else
+                {
+                    Console.WriteLine($"[] {GuestNotes[i]}");
+                }
+            }
+            Console.WriteLine("***************");
 
         }
 
-        public void AddNote()
+        public void AddNote(string new_note)
         {
-
+            GuestNotes.Add(new_note);
         }
 
         public void RemoveNote()
         {
 
+        }
+
+        public void RemoveAllNotes()
+        {
+            GuestNotes.Clear();
         }
 
         public void CleaningService()
