@@ -211,7 +211,7 @@ namespace HotelRoomManagement
             RoomToAddGuest("A1", tempGuest);
 
             tempGuest = new Guest("James", "Jacob");
-            RoomToAddGuest("A1", tempGuest, 21, 111222333, "James hates blue");
+            RoomToAddGuest("A1", tempGuest, 2, 111222333, "James hates blue");
 
             while (true)
             {
@@ -256,8 +256,11 @@ namespace HotelRoomManagement
                             Room room_selected = null;
                             ProgramTitle();
                             Console.WriteLine("---------- Guest Search ----------");
+                            Console.WriteLine("(Enter on blank to go back)");
                             Console.Write("Enter the last name of guest: ");
                             g_search = Console.ReadLine();
+
+                            if (string.IsNullOrEmpty(g_search)) { Console.Clear();  break; }
 
                             foreach (Room room in hotelRooms)
                             {
@@ -272,11 +275,31 @@ namespace HotelRoomManagement
                                 }
                             }
                             Console.WriteLine("----------------------------------");
+                            
+                            if (guests_rooms.Count == 0)
+                            {
+                                Console.WriteLine("\n***************************");
+                                Console.WriteLine("Guest is not in our system.");
+                                Console.WriteLine("***************************\n");
+                                continue;
+
+                            }
+
                             Console.Write("Enter guest # to find: ");
                             if (!IntVerify(out g_select))
                             { continue; }
 
-                            room_selected = guests_rooms[g_select-1];
+                            try
+                            {
+                                room_selected = guests_rooms[g_select - 1];
+                            }
+                            catch (ArgumentOutOfRangeException)
+                            {
+                                Console.WriteLine("\n***************************");
+                                Console.WriteLine("Guest option is out of range.");
+                                Console.WriteLine("***************************\n");
+                                continue;
+                            }
 
                             Console.WriteLine($"\nGuest is inside Room: {room_selected.RoomNumber}");
                             Console.WriteLine("All the guests in the room are:");
@@ -294,15 +317,25 @@ namespace HotelRoomManagement
 
                     case 5:
                         Console.Clear();
+                        ProgramTitle();
+                        Console.WriteLine("------------ Next Day ------------");
                         foreach(Room room in hotelRooms)
                         {
-                            Console.WriteLine($"Days Left for {room.RoomNumber} is: {room.DaysLeft}");
-                            //if (room.DaysLeft >= 0 || room.DaysLeft == null)
-                            //{
-                            //    room.DaysLeft -= 1;
-                            //}
+                            if (room.DaysLeft > 0)
+                            {
+                                room.DaysLeft -= 1;
+                                Console.WriteLine($"Room {room.RoomNumber} now has {room.DaysLeft} day/s left of their stay.");
+                                if (room.DaysLeft == 0)
+                                {
+                                    Console.WriteLine($"Room {room.RoomNumber} will be automatically checked out");
+                                    room.CheckOutGuests();
+                                }
+                            }
                         }
-                        Console.ReadLine
+                        Console.WriteLine("----------------------------------");
+                        Console.Write("Hit enter to go back: ");
+                        Console.ReadLine();
+                        Console.Clear();
                         continue;
 
                     case 6:
