@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -122,10 +123,16 @@ namespace HotelRoomManagement
 
         public void AddGuest(Guest newGuest, int daysStaying, double cardInfo)
         {
-            Guests.Add(newGuest);
+            AddGuest(newGuest);
             DaysStaying = daysStaying;
             DaysLeft = daysStaying;
             GuestCardNumber = cardInfo;
+        }
+
+        public void AddGuest(Guest newGuest, int daysStaying, double cardInfo, string note)
+        {
+            AddGuest(newGuest, daysStaying, cardInfo);
+            GuestNotes.Add(note);
         }
 
         public void CheckOutGuests()
@@ -177,9 +184,18 @@ namespace HotelRoomManagement
             GuestNotes.Add(new_note);
         }
 
-        public void RemoveNote()
+        public bool RemoveNote(int remove_note)
         {
-
+            remove_note -= 1;
+            if (remove_note < 0 || remove_note >= GuestNotes.Count)
+            {
+                Console.WriteLine("\n***************************");
+                Console.WriteLine("Note index is out of range.");
+                Console.WriteLine("***************************\n");
+                return false;
+            }
+            GuestNotes.RemoveAt(remove_note);
+            return true;
         }
 
         public void RemoveAllNotes()

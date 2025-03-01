@@ -23,7 +23,7 @@ namespace HotelRoomManagement
         // if (!IntVerify(out a_int))
         // { continue; }
 
-        public static bool IntVerify(out int variable, bool skip = false)
+        public static bool IntVerify(out int variable)
         {
             // variable is the input to be verified
             if (!int.TryParse(Console.ReadLine(), out variable))
@@ -35,6 +35,28 @@ namespace HotelRoomManagement
             }
             return true;
         }
+
+        public static bool IntVerifyOrNull(out int variable)
+        {
+            string input = Console.ReadLine();
+
+            // variable is the input to be verified
+            if (string.IsNullOrEmpty(input))
+            {
+                variable = 0;
+                return true;
+            }
+
+            if (!int.TryParse(input, out variable))
+            {
+                Console.WriteLine("\n***************************");
+                Console.WriteLine("Choice must be a valid integer.");
+                Console.WriteLine("***************************\n");
+                return false;
+            }
+            return true;
+        }
+
         // Example: 
         // StringVerifyNull(a_string);
         public static bool CardVerify(out double card)
@@ -119,7 +141,7 @@ namespace HotelRoomManagement
         #endregion
 
         #region Add Guests
-        public static void RoomToAddGuest(string room_num, Guest newGuest, int daysStaying = 0, double cardInfo = 0)
+        public static void RoomToAddGuest(string room_num, Guest newGuest, int daysStaying = 0, double cardInfo = 0, string note = "")
         {
             foreach (Room room in hotelRooms)
             {
@@ -130,9 +152,13 @@ namespace HotelRoomManagement
                         room.AddGuest(newGuest);
                     }
                     // If not simply adding the guest but also the other stay information, then it shall be added
-                    else
+                    else if (note == "")
                     {
                         room.AddGuest(newGuest, daysStaying, cardInfo);
+                    }
+                    else
+                    {
+                        room.AddGuest(newGuest, daysStaying, cardInfo, note);
                     }
                     return;
                 }
@@ -183,8 +209,9 @@ namespace HotelRoomManagement
             // Adding Guest
             Guest tempGuest = new Guest("Josh", "Jacob");
             RoomToAddGuest("A1", tempGuest);
-            //tempGuest = new Guest("James", "Jacob");
-            //RoomToAddGuest("A1", tempGuest, 21, 6132008844);
+
+            tempGuest = new Guest("James", "Jacob");
+            RoomToAddGuest("A1", tempGuest, 21, 111222333, "James hates blue");
 
             while (true)
             {
@@ -219,10 +246,64 @@ namespace HotelRoomManagement
                         continue;
 
                     case 4:
-                        break;
+                        Console.Clear();
+                        while (true)
+                        {
+                            string g_search;
+                            List<Room> guests_rooms= new List<Room>();
+                            int interval = 1;
+                            int g_select;
+                            Room room_selected = null;
+                            ProgramTitle();
+                            Console.WriteLine("---------- Guest Search ----------");
+                            Console.Write("Enter the last name of guest: ");
+                            g_search = Console.ReadLine();
+
+                            foreach (Room room in hotelRooms)
+                            {
+                                foreach (Guest guest in room.Guests)
+                                {
+                                    if (guest.LastName.ToLower() == g_search.ToLower())
+                                    {
+                                        Console.WriteLine($"{interval}: {guest.FirstName} {guest.LastName}");
+                                        guests_rooms.Add(room);
+                                        interval++;
+                                    }
+                                }
+                            }
+                            Console.WriteLine("----------------------------------");
+                            Console.Write("Enter guest # to find: ");
+                            if (!IntVerify(out g_select))
+                            { continue; }
+
+                            room_selected = guests_rooms[g_select-1];
+
+                            Console.WriteLine($"\nGuest is inside Room: {room_selected.RoomNumber}");
+                            Console.WriteLine("All the guests in the room are:");
+                            foreach (Guest guest in room_selected.Guests)
+                            {
+                                Console.WriteLine($"-{guest.FirstName} {guest.LastName}");
+                            }
+                            Console.WriteLine("----------------------------------");
+                            Console.Write("Hit enter to go back: ");
+                            Console.ReadLine();
+                            Console.Clear();
+                            break;
+                        }
+                        continue;
 
                     case 5:
-                        break;
+                        Console.Clear();
+                        foreach(Room room in hotelRooms)
+                        {
+                            Console.WriteLine($"Days Left for {room.RoomNumber} is: {room.DaysLeft}");
+                            //if (room.DaysLeft >= 0 || room.DaysLeft == null)
+                            //{
+                            //    room.DaysLeft -= 1;
+                            //}
+                        }
+                        Console.ReadLine
+                        continue;
 
                     case 6:
                         // Exit Program

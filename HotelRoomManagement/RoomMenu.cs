@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -171,70 +172,109 @@ namespace HotelRoomManagement
                     case 3:
                         if (roomInput.Guests.Count() != 0)
                         {
-                            // Fields
-                            int note_choice;
-
-                            // Guests notes
                             #region Guest Notes
                             Console.Clear();
-                            Program.ProgramTitle();
-                            Console.WriteLine("---------- Guest Notes -----------");
-                            roomInput.DisplayNotes();
-                            Console.WriteLine("1.) Add a Note");
-                            Console.WriteLine("2.) Remove a Note");
-                            Console.WriteLine("3.) Clear Notes");
-                            Console.WriteLine("----------------------------------");
-                            Console.WriteLine("(Keep blank and enter to go back)");
-                            Console.Write("Enter choice: ");
-                            if (!Program.IntVerify(out note_choice))
-                            { continue; }
-
-                            // Handles how to affect the notes
-                            switch (note_choice)
+                            while (true)
                             {
-                                case 1:
-                                    while (true)
-                                    {
-                                        // New note to be added
-                                        string new_note;
+                                // Fields
+                                int note_choice;
 
+                                // Guests notes
+                                Program.ProgramTitle();
+                                Console.WriteLine("---------- Guest Notes -----------");
+                                roomInput.DisplayNotes();
+                                Console.WriteLine("1.) Add a Note");
+                                Console.WriteLine("2.) Remove a Note");
+                                Console.WriteLine("3.) Clear Notes");
+                                Console.WriteLine("----------------------------------");
+                                Console.WriteLine("(Keep blank and enter to go back)");
+                                Console.Write("Enter choice: ");
+                                if (!Program.IntVerifyOrNull(out note_choice))
+                                { continue; }
+                                if (note_choice == 0)
+                                {
+                                    Console.Clear();
+                                    break;
+                                }
+
+                                // Handles how to affect the notes
+                                switch (note_choice)
+                                {
+                                    case 1:
                                         Console.Clear();
-                                        Program.ProgramTitle();
-                                        Console.WriteLine("---------- Guest Notes -----------");
-                                        roomInput.DisplayNotes();
-                                        Console.WriteLine("----------------------------------");
-                                        Console.WriteLine("(Keep blank and enter to go back): ");
-                                        Console.Write("Enter the note: ");
-                                        new_note = Console.ReadLine();
-                                        if (string.IsNullOrEmpty(new_note))
+                                        while (true)
                                         {
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            roomInput.AddNote(new_note);
-                                            continue;
-                                        }
-                                    }
-                                    Console.Clear();
-                                    break;
+                                            // New note to be added
+                                            string new_note;
 
-                                case 2:
-                                    while (true)
-                                    {
+                                            Program.ProgramTitle();
+                                            Console.WriteLine("---------- Guest Notes -----------");
+                                            roomInput.DisplayNotes();
+                                            Console.WriteLine("----------------------------------");
+                                            Console.WriteLine("(Keep blank and enter to go back): ");
+                                            Console.Write("Enter the note: ");
+                                            new_note = Console.ReadLine();
+                                            if (string.IsNullOrEmpty(new_note))
+                                            {
+                                                break;
+                                            }
+                                            else
+                                            {
+                                                roomInput.AddNote(new_note);
+                                                continue;
+                                            }
+                                        }
+                                        Console.Clear();
                                         break;
-                                    }
-                                    Console.Clear();
-                                    break;
 
-                                case 3:
-                                    roomInput.RemoveAllNotes();
-                                    break;
+                                    case 2:
+                                        // Remove a note
+                                        Console.Clear();
+                                        while (true)
+                                        {
+                                            // Note to be removed
+                                            int delete_note;
 
-                                default:
-                                    break;
+                                            Program.ProgramTitle();
+                                            Console.WriteLine("---------- Guest Notes -----------");
+                                            roomInput.DisplayNotes(true);
+                                            Console.WriteLine("----------------------------------");
+                                            Console.WriteLine("(Keep blank and enter to go back): ");
+                                            Console.Write("Enter note# to deleted: ");
+                                            if (!Program.IntVerifyOrNull(out delete_note))
+                                            { continue; }
+
+                                            if (delete_note == 0)
+                                            {
+                                                // if unsuccessful, go back
+                                                break;
+                                            }
+                                            else
+                                            {
+                                                // if out of range, restart
+                                                roomInput.RemoveNote(delete_note);
+                                                Console.Clear();
+                                                continue;
+                                            }
+                                            
+                                        }
+                                        Console.Clear();
+                                        break;
+
+                                    case 3:
+                                        // Clear all the notes
+                                        roomInput.RemoveAllNotes();
+                                        Console.Clear();
+                                        break;
+
+                                    default:
+                                        Console.WriteLine("\n***************************");
+                                        Console.WriteLine("Choose an option from 1-3.");
+                                        Console.WriteLine("***************************\n");
+                                        continue;
+                                }
+                                break;
                             }
-                            break;
                             #endregion
                         }
                         else
