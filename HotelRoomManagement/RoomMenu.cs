@@ -10,19 +10,23 @@ namespace HotelRoomManagement
 {
     internal class RoomMenu
     {
+        /// <summary>
+        /// Class that is being used to display the entirety of the Room Menu instead of all the code being compiled in Program.cs
+        /// </summary>
+        /// <param name="roomInput"> the specified room class the user is editing </param>
         public static void DisplayRoomMenu(Room roomInput)
         {
             #region Room Menu
             while (true)
             {
-                // Display of most room information
+                // Display program title and room information
                 Program.ProgramTitle();
                 Console.WriteLine($"{roomInput.RoomType()}");
                 roomInput.RoomInformation();
                 // Will be used for the user to determine what will be done with the room
                 int roomChoice;
 
-                //Specified Room's Menu Options with or without guests
+                // Specified Room's Menu Options depending if they have guests or not
                 if (roomInput.Guests.Count() == 0)
                 {
                     Console.WriteLine("\n1.) Ammenities");
@@ -39,13 +43,14 @@ namespace HotelRoomManagement
                 Console.WriteLine("----------------------------------");
                 Console.WriteLine("(Keep blank and enter to go back)");
                 Console.Write("Enter choice: ");
-                
+                // If the string is empty, will go back to the hotel floors menu
                 string input = Console.ReadLine(); 
                 if (string.IsNullOrEmpty(input))
                 {
                     Console.Clear();
                     break;
                 }
+                // Will verify if the input is a proper integer, if not it shall loop
                 if (!int.TryParse(input, out roomChoice))
                 {
                     Console.WriteLine("\n***************************");
@@ -61,11 +66,14 @@ namespace HotelRoomManagement
                         // Display the ammenities
                         Console.Clear();
                         Program.ProgramTitle();
+                        // Amenities differentiate between the standard and luxery rooms
                         ((IAmenities)roomInput).DisplayAmenities();
                         Console.Clear();
                         break;
 
                     case 2:
+                        // Add or remove guests depending if there are guests
+
                         if (roomInput.Guests.Count() == 0)
                         {
                             #region Checking in Guests
@@ -74,51 +82,59 @@ namespace HotelRoomManagement
                             int days_staying = 0;
                             double card_n = 0;
 
-                            // Check in guests
+                            // Ask to check in guests
                             Console.Clear();
                             Program.ProgramTitle();
                             Console.WriteLine("-------- Check In Guest/s --------");
                             Console.WriteLine("(Keep blank and enter when done)");
 
+                            // A placeholder for the guest currently being handled to add into the room 
                             List<Guest> tempGuests = new List<Guest>();
 
                             // Continuously ask the user to input guests
                             for (int i = 0; i < roomInput.RoomCapacity; i++)
                             {
-                                Console.Write("Enter guest first name: ");
+                                // Willl ask the player to add the nth guest
+                                Console.Write($"Enter first name of guest {i+1}: ");
                                 f_name = Console.ReadLine();
 
-                                // Finish check-in process if input is blank
+                                // Continue to the checking in process if input is blank
                                 if (string.IsNullOrEmpty(f_name))
                                 {
+                                    // If the user has not added any guests into the room, it it will inform that the guest's in the room will remain 0
                                     if (tempGuests.Count == 0)
                                     {
-                                        Console.WriteLine("No guests added. Returning to menu...");
+                                        Console.Write("No guests added. Returning to menu, hit enter: ");
                                         Console.ReadLine();
                                         Console.Clear();
                                         return;
                                     }
 
-                                    break; // Proceed to payment section
+                                    // Proceed to payment section
+                                    break;
                                 }
 
-                                Console.Write("Enter guest last name: ");
+                                Console.Write($"Enter last name of guest {i + 1}: ");
                                 l_name = Console.ReadLine();
-                                Program.StringVerifyNull(l_name);
+                                // if nth guest's last name is improper, it will go back to asking for the guest's first name
+                                if (!Program.StringVerifyNull(l_name))
+                                { i--;  continue; }
 
-                                // Capitalize names properly
+                                // Capitalize names properly when adding into the list
                                 Guest cur_guest = new Guest(Program.UpperStart(f_name), Program.UpperStart(l_name));
                                 tempGuests.Add(cur_guest);
                                 Console.WriteLine("Guest has been added!");
 
-                                // If room is full, proceed to payment
+                                // Once the room is full, proceed 
                                 if (i == roomInput.RoomCapacity - 1)
                                 {
-                                    Console.WriteLine("Room is now full.");
+                                    Console.Write("Room is now full, hit enter to proceed: ");
+                                    Console.ReadLine();
                                     break;
                                 }
                             }
 
+                            // Names have been added, will now ask for the days staying and payment information
                             // Only ask for payment if there are guests
                             if (tempGuests.Count > 0)
                             {
@@ -130,10 +146,11 @@ namespace HotelRoomManagement
                                     Console.Write("Please enter the number of days staying: ");
                                     if (!Program.IntVerify(out days_staying)) continue;
 
+                                    // If the card number entered is not 9-digits, it will make the user restart from the # of days section
                                     Console.Write("Enter the card number for payment (000-000-000) (do not enter dashes): ");
                                     if (!Program.CardVerify(out card_n)) continue;
 
-                                    // Add all guests to the room
+                                    // Add all guests in the guest list to the room, updating the number of days the room will be occupied at the payment being stored
                                     foreach (var guest in tempGuests)
                                     {
                                         roomInput.AddGuest(guest, days_staying, card_n);
@@ -160,8 +177,10 @@ namespace HotelRoomManagement
                             Program.ProgramTitle();
                             Console.WriteLine("-------- Check Out Guest/s -------");
                             Console.WriteLine("\nThe guests have successfully been checked out!\n");
+                            // Clears all the guests from the room's guest list and clears the days staying and card information
                             roomInput.CheckOutGuests();
                             Console.WriteLine("----------------------------------");
+                            // Goes back to the Room Menu
                             Console.Write("Hit enter to go back: ");
                             Console.ReadLine();
                             Console.Clear();
@@ -177,12 +196,15 @@ namespace HotelRoomManagement
                             while (true)
                             {
                                 // Fields
-                                int note_choice;
+                                int? note_choice; // used to decide what will be done with the list of guest notes
 
                                 // Guests notes
+                                // DIsplay's program title and section user is on
                                 Program.ProgramTitle();
                                 Console.WriteLine("---------- Guest Notes -----------");
+                                // Will display the notes if available
                                 roomInput.DisplayNotes();
+                                // Note options
                                 Console.WriteLine("1.) Add a Note");
                                 Console.WriteLine("2.) Remove a Note");
                                 Console.WriteLine("3.) Clear Notes");
@@ -191,7 +213,9 @@ namespace HotelRoomManagement
                                 Console.Write("Enter choice: ");
                                 if (!Program.IntVerifyOrNull(out note_choice))
                                 { continue; }
-                                if (note_choice == 0)
+
+                                // Should the input be blank, will go back to the room's menu
+                                if (note_choice == null)
                                 {
                                     Console.Clear();
                                     break;
@@ -207,12 +231,15 @@ namespace HotelRoomManagement
                                             // New note to be added
                                             string new_note;
 
+                                            // Display's program title and guest notes section
                                             Program.ProgramTitle();
                                             Console.WriteLine("---------- Guest Notes -----------");
                                             roomInput.DisplayNotes();
                                             Console.WriteLine("----------------------------------");
                                             Console.WriteLine("(Keep blank and enter to go back): ");
                                             Console.Write("Enter the note: ");
+
+                                            // If user's input is blank, go back to room's menu
                                             new_note = Console.ReadLine();
                                             if (string.IsNullOrEmpty(new_note))
                                             {
@@ -220,7 +247,9 @@ namespace HotelRoomManagement
                                             }
                                             else
                                             {
+                                                // Add the note the user has written
                                                 roomInput.AddNote(new_note);
+                                                Console.Clear();
                                                 continue;
                                             }
                                         }
@@ -233,7 +262,7 @@ namespace HotelRoomManagement
                                         while (true)
                                         {
                                             // Note to be removed
-                                            int delete_note;
+                                            int? delete_note;
 
                                             Program.ProgramTitle();
                                             Console.WriteLine("---------- Guest Notes -----------");
@@ -244,15 +273,17 @@ namespace HotelRoomManagement
                                             if (!Program.IntVerifyOrNull(out delete_note))
                                             { continue; }
 
-                                            if (delete_note == 0)
+                                            if (delete_note == null)
                                             {
-                                                // if unsuccessful, go back
+                                                // user's value was empty so the menu will go back
                                                 break;
                                             }
                                             else
                                             {
-                                                // if out of range, restart
-                                                roomInput.RemoveNote(delete_note);
+                                                // if out of range, it will restart from this point
+                                                if (!roomInput.RemoveNote(delete_note))
+                                                { continue; }
+                                                // if within range, will return true and simpl continue
                                                 Console.Clear();
                                                 continue;
                                             }
@@ -268,6 +299,7 @@ namespace HotelRoomManagement
                                         break;
 
                                     default:
+                                        // Should the user input an int not within the options available
                                         Console.WriteLine("\n***************************");
                                         Console.WriteLine("Choose an option from 1-3.");
                                         Console.WriteLine("***************************\n");
@@ -289,7 +321,7 @@ namespace HotelRoomManagement
                     case 4:
                         if (roomInput.Guests.Count() != 0)
                         {
-                            // Send Cleaning Service
+                            // Sends Cleaning Service, letting the user know they have been sent to the room
                             Console.Clear();
                             Program.ProgramTitle();
                             roomInput.CleaningService();
@@ -307,7 +339,7 @@ namespace HotelRoomManagement
                     case 5:
                         if (roomInput.Guests.Count() != 0)
                         {
-                            // Set up wake up call
+                            // Lets user know a wake up call has been set for the guest/s
                             Console.Clear();
                             Program.ProgramTitle();
                             roomInput.WakeUpCall();
@@ -323,6 +355,7 @@ namespace HotelRoomManagement
                         break;
 
                     default:
+                        // Should the input not be within the options available
                         Console.WriteLine("\n***************************");
                         Console.WriteLine("Choose an integer available on the choice list above.");
                         Console.WriteLine("***************************\n");

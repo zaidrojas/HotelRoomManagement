@@ -184,17 +184,18 @@ namespace HotelRoomManagement
             GuestNotes.Add(new_note);
         }
 
-        public bool RemoveNote(int remove_note)
+        public bool RemoveNote(int? remove_note)
         {
             remove_note -= 1;
-            if (remove_note < 0 || remove_note >= GuestNotes.Count)
+            if (remove_note < 0 || remove_note >= GuestNotes.Count || remove_note == null)
             {
                 Console.WriteLine("\n***************************");
                 Console.WriteLine("Note index is out of range.");
                 Console.WriteLine("***************************\n");
                 return false;
             }
-            GuestNotes.RemoveAt(remove_note);
+            int index = remove_note.Value;
+            GuestNotes.RemoveAt(index);
             return true;
         }
 

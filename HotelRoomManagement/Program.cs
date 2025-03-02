@@ -49,7 +49,7 @@ namespace HotelRoomManagement
             }
         }
 
-        public static bool IntVerifyOrNull(out int variable)
+        public static bool IntVerifyOrNull(out int? variable)
         {
             try
             {
@@ -57,15 +57,16 @@ namespace HotelRoomManagement
 
                 if (string.IsNullOrEmpty(input))
                 {
-                    variable = 0;
-                    return true; // Treat empty input as valid
+                    variable = null;
+                    return true;
                 }
 
-                if (!int.TryParse(input, out variable))
+                if (!int.TryParse(input, out int tempVar))
                 {
                     throw new FormatException("Choice must be a valid integer.");
                 }
 
+                variable = tempVar;
                 return true;
             }
             catch (FormatException ex)
