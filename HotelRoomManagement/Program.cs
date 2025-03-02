@@ -8,16 +8,21 @@ namespace HotelRoomManagement
         // Methods to verify inputs
         public static bool StringVerifyNull(string variable)
         {
-
-            // variable is the input to be verified
-            if (string.IsNullOrWhiteSpace(variable))
+            try
+            {
+                if (string.IsNullOrWhiteSpace(variable))
+                {
+                    throw new ArgumentException("Input must not be Null or Whitespace.");
+                }
+                return true;
+            }
+            catch (ArgumentException ex)
             {
                 Console.WriteLine("\n***************************");
-                Console.WriteLine("Input must not be Null or Whitespace.");
+                Console.WriteLine(ex.Message);
                 Console.WriteLine("***************************\n");
                 return false;
             }
-            return true;
         }
         // Example: 
         // if (!IntVerify(out a_int))
@@ -25,53 +30,77 @@ namespace HotelRoomManagement
 
         public static bool IntVerify(out int variable)
         {
-            // variable is the input to be verified
-            if (!int.TryParse(Console.ReadLine(), out variable))
+            try
+            {
+                string input = Console.ReadLine();
+                if (!int.TryParse(input, out variable))
+                {
+                    throw new FormatException("Choice must be a valid integer.");
+                }
+                return true;
+            }
+            catch (FormatException ex)
             {
                 Console.WriteLine("\n***************************");
-                Console.WriteLine("Choice must be a valid integer.");
+                Console.WriteLine(ex.Message);
                 Console.WriteLine("***************************\n");
+                variable = 0; 
                 return false;
             }
-            return true;
         }
 
         public static bool IntVerifyOrNull(out int variable)
         {
-            string input = Console.ReadLine();
-
-            // variable is the input to be verified
-            if (string.IsNullOrEmpty(input))
+            try
             {
-                variable = 0;
+                string input = Console.ReadLine();
+
+                if (string.IsNullOrEmpty(input))
+                {
+                    variable = 0;
+                    return true; // Treat empty input as valid
+                }
+
+                if (!int.TryParse(input, out variable))
+                {
+                    throw new FormatException("Choice must be a valid integer.");
+                }
+
                 return true;
             }
-
-            if (!int.TryParse(input, out variable))
+            catch (FormatException ex)
             {
                 Console.WriteLine("\n***************************");
-                Console.WriteLine("Choice must be a valid integer.");
+                Console.WriteLine(ex.Message);
                 Console.WriteLine("***************************\n");
+                variable = 0;
                 return false;
             }
-            return true;
         }
 
         // Example: 
         // StringVerifyNull(a_string);
         public static bool CardVerify(out double card)
         {
-            // variable is the input to be verified
-            if (!double.TryParse(Console.ReadLine(), out card) || card.ToString().Length != 9)
+            try
+            {
+                string input = Console.ReadLine();
+                if (!double.TryParse(input, out card) || input.Length != 9)
+                {
+                    throw new FormatException("Card must be a valid 9-digit input.");
+                }
+                return true;
+            }
+            catch (FormatException ex)
             {
                 Console.WriteLine("\n***************************");
-                Console.WriteLine("Card must be a valid 9 digit input.");
+                Console.WriteLine(ex.Message);
                 Console.WriteLine("***************************\n");
+                card = 0; 
                 return false;
             }
-
-            return true;
         }
+
         #endregion
 
         #region Uppercase string
