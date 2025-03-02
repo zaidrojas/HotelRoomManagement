@@ -8,6 +8,9 @@ using System.Xml.Linq;
 
 namespace HotelRoomManagement
 {
+    /// <summary>
+    /// General abstract class of the rooms
+    /// </summary>
     abstract class Room
     {
         // Fields
@@ -116,11 +119,21 @@ namespace HotelRoomManagement
             }
         }
 
+        /// <summary>
+        /// Add the guest to the Guest List of Guest Classes
+        /// </summary>
+        /// <param name="newGuest"></param>
         public void AddGuest(Guest newGuest)
         {
             Guests.Add(newGuest);
         }
 
+        /// <summary>
+        /// Adds the guest to the Guest list, and updates the days staying, and the card information for payment
+        /// </summary>
+        /// <param name="newGuest"></param>
+        /// <param name="daysStaying"></param>
+        /// <param name="cardInfo"></param>
         public void AddGuest(Guest newGuest, int daysStaying, double cardInfo)
         {
             AddGuest(newGuest);
@@ -129,12 +142,22 @@ namespace HotelRoomManagement
             GuestCardNumber = cardInfo;
         }
 
+        /// <summary>
+        /// Adds the guest to the Guest list, and updates the days staying, and the card information for payment, and adds a note to the list of notes
+        /// </summary>
+        /// <param name="newGuest"></param>
+        /// <param name="daysStaying"></param>
+        /// <param name="cardInfo"></param>
+        /// <param name="note"></param>
         public void AddGuest(Guest newGuest, int daysStaying, double cardInfo, string note)
         {
             AddGuest(newGuest, daysStaying, cardInfo);
             GuestNotes.Add(note);
         }
 
+        /// <summary>
+        /// Will set all the information regarding the guests staying—including the actual guests, days staying, notes, and card payment, as empty or 0
+        /// </summary>
         public void CheckOutGuests()
         {
             GuestNotes.Clear();
@@ -144,25 +167,35 @@ namespace HotelRoomManagement
             DaysStaying = 0;
         }
 
+        /// <summary>
+        /// Will Display the Room's basic information, and will display information regarding the guests should there be guest currently staying
+        /// </summary>
         public void RoomInformation()
         {
+            // Individual room's information
             Console.WriteLine($"Room Capacity: {RoomCapacity}");
             Console.WriteLine($"Guests: {Guests.Count()}");
             if (Guests.Count != 0)
             {
+                // Display's each guest
                 foreach (Guest guest in Guests)
                 {
                     Console.WriteLine($"-{guest.FirstName} {guest.LastName}");
                 }
+                // the guest's staying information 
                 Console.WriteLine($"Days Staying: {DaysStaying}");
                 Console.WriteLine($"Days Remaining: {DaysLeft}");
                 Console.WriteLine($"Card Being Used: {GuestCardNumber}");
             }
         }
 
+        /// <summary>
+        /// Displays the notes available on the notes list, will number the notes if asked
+        /// </summary>
+        /// <param name="numbers"></param>
         public void DisplayNotes(bool numbers = false)
         {
-            // numbers will make it if the notes are numbered or not
+            // Numbers-bool will make it if the notes are numbered or not
             Console.WriteLine("**** Notes ****");
             for (var i = 0; i < GuestNotes.Count; i++)
             {
@@ -179,14 +212,26 @@ namespace HotelRoomManagement
 
         }
 
+        /// <summary>
+        /// Adds a note to the note list.
+        /// </summary>
+        /// <param name="new_note"></param>
         public void AddNote(string new_note)
         {
             GuestNotes.Add(new_note);
         }
 
+        /// <summary>
+        /// Removes the note at a the specified index
+        /// </summary>
+        /// <param name="remove_note"></param>
+        /// <returns>bool if it was possible to remove a note at that index</returns>
         public bool RemoveNote(int? remove_note)
         {
+            // Since Notes list begins at 1, the actual value is one less the displayed list #
             remove_note -= 1;
+
+            // if the input is null, or not within the range of the Notes list, it will throw an error
             if (remove_note < 0 || remove_note >= GuestNotes.Count || remove_note == null)
             {
                 Console.WriteLine("\n***************************");
@@ -194,16 +239,24 @@ namespace HotelRoomManagement
                 Console.WriteLine("***************************\n");
                 return false;
             }
+
+            // RemoveAt does not work with null values, so int index is used as the int value determined by the possible-null remove_note variable
             int index = remove_note.Value;
             GuestNotes.RemoveAt(index);
             return true;
         }
 
+        /// <summary>
+        /// Clears the Guest Notes list
+        /// </summary>
         public void RemoveAllNotes()
         {
             GuestNotes.Clear();
         }
 
+        /// <summary>
+        /// Will inform the user that the cleaning service has been sent, displaying it in the console
+        /// </summary>
         public void CleaningService()
         {
             Console.WriteLine("-------- Cleaning Service --------");
@@ -214,6 +267,9 @@ namespace HotelRoomManagement
             Console.ReadLine();
         }
 
+        /// <summary>
+        /// Will inform the user that the Wake-Up call will be active for the guest staying, displaying it in the console
+        /// </summary>
         public void WakeUpCall()
         {
             Console.WriteLine("---------- Wake Up Call ----------");
@@ -223,7 +279,7 @@ namespace HotelRoomManagement
             Console.ReadLine();
         }
 
-        // Other rooms will say if they are standard or elite
+        // Other rooms will say if they are standard or luxery rooms
         public abstract string RoomType();
 
     }

@@ -13,7 +13,7 @@ namespace HotelRoomManagement
         private string _lastName;
 
         /// <summary>
-        /// Gets guest's number
+        /// Gets guest's first name
         /// </summary>
         public string FirstName
         {
@@ -28,6 +28,9 @@ namespace HotelRoomManagement
             }
         }
 
+        /// <summary>
+        /// Gets guest's last name
+        /// </summary>
         public string LastName
         {
             get { return _lastName; }
@@ -41,6 +44,11 @@ namespace HotelRoomManagement
             }
         }
 
+        /// <summary>
+        /// Constructor to initilize the Guest instance
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
         public Guest(string firstName, string lastName)
         {
             FirstName = firstName;

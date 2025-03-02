@@ -148,6 +148,14 @@ namespace HotelRoomManagement
                                     Console.WriteLine("-------- Check In Guest/s --------");
                                     Console.Write("Please enter the number of days staying: ");
                                     if (!Program.IntVerify(out days_staying)) continue;
+                                    // Makes sure the days staying is greater than 0
+                                    if (days_staying <= 0) 
+                                    {
+                                        Console.WriteLine("\n***************************");
+                                        Console.WriteLine("Days staying must be greater than 0");
+                                        Console.WriteLine("***************************\n");
+                                        continue;
+                                    }
 
                                     // If the card number entered is not 9-digits, it will make the user restart from the # of days section
                                     Console.Write("Enter the card number for payment (000-000-000) (do not enter dashes): ");

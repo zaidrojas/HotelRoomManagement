@@ -6,20 +6,34 @@ using System.Threading.Tasks;
 
 namespace HotelRoomManagement
 {
+    /// <summary>
+    /// Standard Room Class
+    /// </summary>
     internal class StandardRoom: Room, IAmenities
     {
+        /// <summary>
+        /// Constructor that is used to inialize a room.
+        /// </summary>
+        /// <param name="roomNumber"></param>
+        /// <param name="roomCapacity"></param>
         public StandardRoom(string roomNumber, int roomCapacity)
         {
             RoomNumber = roomNumber;
             RoomCapacity = roomCapacity;
-            //_guestNotes = new List<string>();
         }
 
+        /// <summary>
+        /// Displays the type of room it is
+        /// </summary>
+        /// <returns> a string is returned for the program to then display </returns>
         public override string RoomType()
         {
             return "--------- Standard Room ----------";
         }
 
+        /// <summary>
+        /// Displays the available amenities available in a standard room
+        /// </summary>
         public void DisplayAmenities()
         {
             Console.WriteLine("------------ Amenities -----------");
