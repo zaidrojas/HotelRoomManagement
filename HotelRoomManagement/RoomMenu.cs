@@ -8,10 +8,13 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HotelRoomManagement
 {
+    /// <summary>
+    /// Class that is being used to display the entirety of the Room Menu instead of all the code being compiled in Program.cs
+    /// </summary>
     internal class RoomMenu
     {
         /// <summary>
-        /// Class that is being used to display the entirety of the Room Menu instead of all the code being compiled in Program.cs
+        /// The menu tree that goes through the Room Menu and handles the room's information
         /// </summary>
         /// <param name="roomInput"> the specified room class the user is editing </param>
         public static void DisplayRoomMenu(Room roomInput)
